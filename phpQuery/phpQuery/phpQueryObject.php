@@ -1361,7 +1361,24 @@ class phpQueryObject
 		}
 	}
 	/**
-	 * Enter description here...
+	 * $doc = phpQuery::newDocumentHTML('...');
+     * 
+     * // setter using property name
+     * $doc[".styleHere"]->css('background-color', '#003300');
+     * 
+     * // setter using property namemap
+     * $doc[".styleHere"]->css(array(
+     *     "border" => "1px solid #0000",
+     *     "border-collapse" => "collapse",
+     * ));
+     * 
+     * // remove css property
+     * $doc[".styleHere"]->css('background-color', '');
+     * 
+     * // getter using property name
+     * echo "Border is : " . $doc[".styleHere"]->css('border');
+     * 
+     * getter returns NULL if that CSS property is not found
 	 *
 	 * @return phpQuery|QueryTemplatesSource|QueryTemplatesParse|QueryTemplatesSourceQuery
 	 * @todo
@@ -1378,7 +1395,7 @@ class phpQueryObject
 				if ($node->hasAttribute("style")) $styleValue = $node->getAttribute("style");
 				if ($styleValue != "") $_new_map = $this->explodeStyle($styleValue);
 				foreach($map as $prop => $a) {
-					if ($a == "") {
+					if ($a === "") {
 						unset($_new_map[$prop]);
 					} else {
 						$_new_map[$prop] = $a;
@@ -1392,7 +1409,7 @@ class phpQueryObject
 				{
 					$styleValue = $node->getAttribute("style");
 					$styleMap = $this->explodeStyle($styleValue);
-					$propValue = $styleMap[$propertyName];
+					$propValue = @ $styleMap[$propertyName];
 				}
 				return $propValue;
 			}
@@ -1403,11 +1420,13 @@ class phpQueryObject
 	private function explodeStyle($style) {
 		$map = array();
 
+		$style = rtrim($style . ';', ';');
+
 		$arrStyle = explode(";", $style);
 
 		foreach ($arrStyle as $value) {
 			$prop = explode(":", $value);
-			$map[$prop[0]] = $prop[1];
+			$map[trim($prop[0])] = trim($prop[1]);
 		}
 
 		return $map;
@@ -1419,12 +1438,12 @@ class phpQueryObject
 			if ($prop != "") $arrStyle[] = $prop . ":" . $value;
 		}
 
-		$styleText = implode(";", $arrStyle);
+		$styleText = implode(";", $arrStyle) . ';';
 
 		return $styleText;
 	}
 	/**
-	 * @todo
+	 * show the element using $doc[".styleHere"]->show()
 	 *
 	 */
 	public function show() {
@@ -1432,7 +1451,7 @@ class phpQueryObject
 		return $this;
 	}
 	/**
-	 * @todo
+	 * hide the element using $doc[".styleHere"]->hide()
 	 *
 	 */
 	public function hide() {
