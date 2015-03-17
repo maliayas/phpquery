@@ -1393,7 +1393,7 @@ class phpQueryObject
 				}
 				$_new_map = array();
 				if ($node->hasAttribute("style")) $styleValue = $node->getAttribute("style");
-				if ($styleValue != "") $_new_map = $this->explodeStyle($styleValue);
+				if (@ $styleValue != "") $_new_map = $this->explodeStyle($styleValue);
 				foreach($map as $prop => $a) {
 					if ($a === "") {
 						unset($_new_map[$prop]);
@@ -1402,7 +1402,7 @@ class phpQueryObject
 					}
 				}
 				@$node->setAttribute("style", $this->implodeStyle($_new_map));
-				$this->attrEvents($propertyName, "style", $styleValue, $node);
+				$this->attrEvents($propertyName, "style", @ $styleValue, $node);
 			} else {
 				$propValue = "";
 				if ($node->hasAttribute("style"))
