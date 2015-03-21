@@ -3035,7 +3035,7 @@ class phpQueryObject
    * @access private
 	 */
 	public function current(){
-		return $this->elementsInterator[ $this->current ];
+		return phpQuery::pq($this->elementsInterator[ $this->current ]);
 	}
 	/**
    * @access private
