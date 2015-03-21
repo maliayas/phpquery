@@ -1420,13 +1420,10 @@ class phpQueryObject
 	private function explodeStyle($style) {
 		$map = array();
 
-		$style = rtrim($style . ';', ';');
-
-		$arrStyle = explode(";", $style);
-
-		foreach ($arrStyle as $value) {
-			$prop = explode(":", $value);
-			$map[trim($prop[0])] = trim($prop[1]);
+		if (preg_match_all('%([^:;\s]+)\s*:([^:;]+)%', $style, $matches, PREG_SET_ORDER)) {
+			foreach ($matches as $match) {
+				$map[$match[1]] = trim($match[2]);
+			}
 		}
 
 		return $map;
@@ -1435,10 +1432,10 @@ class phpQueryObject
 		$styleText = "";
 
 		foreach ($map as $prop => $value) {
-			if ($prop != "") $arrStyle[] = $prop . ":" . $value;
+			if ($prop != "") $arrStyle[] = $prop . ': ' . $value . ';';
 		}
 
-		$styleText = implode(";", $arrStyle) . ';';
+		$styleText = implode(' ', $arrStyle);
 
 		return $styleText;
 	}
