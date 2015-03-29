@@ -2539,6 +2539,7 @@ class phpQueryObject
 	 * Internal stack iterator.
 	 *
 	 * @access private
+     * @return {Array.<DOMNode>}
 	 */
 	public function stack($nodeTypes = null) {
 		if (!isset($nodeTypes))

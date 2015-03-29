@@ -1,4 +1,4 @@
-<?php
+`<?php
 /**
  * jQuery Server Plugin
  *
@@ -58,7 +58,6 @@ class jQueryServer {
 			phpQuery::ajax($ajax);
 		} else {
 			throw new Exception("URL needed to download content");
-			break;
 		}
 	}
 	public function success($response) {
